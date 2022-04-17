@@ -1,11 +1,13 @@
-package com.jackchen.wiki;
+package com.jackchen.wiki.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
+@ComponentScan("com.jackchen")
 @SpringBootApplication
 public class WikiApplication {
 
