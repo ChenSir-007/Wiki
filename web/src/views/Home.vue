@@ -92,7 +92,6 @@ for (let i = 0; i < 23; i++) {
 export default defineComponent({
   name: 'Home',
   setup(){
-    console.log("set up");
     const ebooks = ref();
     const ebooks1 = reactive({books: []});
     const actions: Record<string, string>[] = [
@@ -101,13 +100,11 @@ export default defineComponent({
       { type: 'MessageOutlined', text: '2' },
     ];
     onMounted(() => {
-      console.log("onMounted1");
       axios.get("/ebook/list").then(
           (response) => {
             const data = response.data;
             ebooks.value = data.content;
             ebooks1.books = data.content;
-            console.log(response);
           }
       )
     });
