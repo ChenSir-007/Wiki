@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, toRef } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import axios from 'axios';
 
 // const listData: Record<string, string>[] = [];
@@ -93,7 +93,7 @@ export default defineComponent({
   name: 'Home',
   setup(){
     const ebooks = ref();
-    const ebooks1 = reactive({books: []});
+    // const ebooks1 = reactive({books: []});
     const actions: Record<string, string>[] = [
       { type: 'StarOutlined', text: '156' },
       { type: 'LikeOutlined', text: '156' },
