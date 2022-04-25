@@ -4,6 +4,7 @@
       <a-menu
           mode="inline"
           :style="{ height: '100%', borderRight: 0 }"
+          @click="handleClick"
       >
         <a-menu-item key="welcome">
           <MailOutlined />
@@ -22,7 +23,10 @@
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      <a-list item-layout="vertical" size="large" :data-source="ebooks" :grid="{ gutter: 20, column: 3}">
+      <div class="welcome" v-show="isShowWelcome">
+        <h1>欢迎使用校园知识库系统</h1>
+      </div>
+      <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :data-source="ebooks" :grid="{ gutter: 20, column: 3}">
         <template #renderItem="{ item }">
           <a-list-item key="item.name">
             <template #actions>
@@ -96,6 +100,19 @@ export default defineComponent({
       { type: 'LikeOutlined', text: '156' },
       { type: 'MessageOutlined', text: '2' },
     ];
+
+    const isShowWelcome = ref(true);
+
+    const handleClick = (value: any) => {
+      // console.log("menu click", value)
+      if (value.key === 'welcome') {
+        isShowWelcome.value = true;
+      } else {
+        isShowWelcome.value = false;
+      }
+      // isShowWelcome.value = value.key === 'welcome';
+    };
+
     onMounted(() => {
       handleQueryCategory();
       axios.get("/ebook/list",{
@@ -116,7 +133,9 @@ export default defineComponent({
       // ebooks2: toRef(ebooks1,"books"),
       // listData,
       actions,
-      level1
+      level1,
+      isShowWelcome,
+      handleClick
     }
   }
 });
