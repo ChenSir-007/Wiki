@@ -199,6 +199,7 @@ export default defineComponent({
         const data = response.data; // data = commonResp
         if (data.success) {
           modalVisible.value = false;
+          message.success('保存成功！')
 
           // 重新加载列表
           handleQuery();
@@ -278,6 +279,8 @@ export default defineComponent({
      * 编辑
      */
     const edit = (record:any) => {
+      //编辑时先清空富文本框
+      editor.txt.html("");
       modalVisible.value = true;
       doc.value = Tool.copy(record);
       handleQueryContent();
@@ -294,6 +297,8 @@ export default defineComponent({
      * 新增
      */
     const add = () => {
+      //编辑时先清空富文本框
+      editor.txt.html("");
       modalVisible.value = true;
       doc.value = {
         ebookId:route.query.ebookId
