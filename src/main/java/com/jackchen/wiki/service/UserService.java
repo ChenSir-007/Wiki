@@ -8,6 +8,7 @@ import com.jackchen.wiki.exception.BusinessException;
 import com.jackchen.wiki.exception.BusinessExceptionCode;
 import com.jackchen.wiki.mapper.UserMapper;
 import com.jackchen.wiki.req.UserQueryReq;
+import com.jackchen.wiki.req.UserResetPasswordReq;
 import com.jackchen.wiki.req.UserSaveReq;
 import com.jackchen.wiki.resp.PageResp;
 import com.jackchen.wiki.resp.UserQueryResp;
@@ -96,5 +97,13 @@ public class UserService {
         } else {
             return userList.get(0);
         }
+    }
+
+    /**
+     * 修改密码
+     */
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }
