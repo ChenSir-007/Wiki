@@ -22,7 +22,7 @@
         <router-link to="/about">关于我们</router-link>
       </a-menu-item>
       <a class="login-menu" v-show="user.id">
-        <span>您好：{{user.name}}</span>
+        您好：{{user.name}}
       </a>
       <a class="login-menu" v-show="!user.id" @click="showLoginModal">
         <span>登录</span>
@@ -48,9 +48,10 @@
 </template>
 
 <script lang="ts">
+import store from '@/store';
 import { message } from 'ant-design-vue';
 import axios from 'axios';
-import { defineComponent, ref } from 'vue';
+import {computed, defineComponent, ref } from 'vue';
 
 declare let hexMd5: any;
 declare let KEY: any;
@@ -59,9 +60,9 @@ export default defineComponent({
   name: 'the-header',
   setup () {
     // 登录后保存
-    // const user = computed(() => store.state.user);
-    const user = ref();
-    user.value = {};
+    const user = computed(() => store.state.user);
+    // const user = ref();
+    // user.value = {};
 
     // 用来登录
     const loginUser = ref({
@@ -85,10 +86,10 @@ export default defineComponent({
         if (data.success) {
           loginModalVisible.value = false;
           message.success("登录成功！");
-          user.value = data.content;
+          // user.value = data.content;
           console.log(user.value.name);
       //
-      //     store.commit("setUser", data.content);
+          store.commit("setUser", data.content);
         } else {
           message.error(data.message);
         }
