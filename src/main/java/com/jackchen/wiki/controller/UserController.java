@@ -25,8 +25,7 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/user")
 public class UserController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
-
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @Resource
     private UserService userService;
@@ -38,7 +37,7 @@ public class UserController {
     private RedisTemplate redisTemplate;
 
     @GetMapping("/list")
-    public CommonResp list(@Valid UserQueryReq req){
+    public CommonResp list(@Valid UserQueryReq req) {
         CommonResp<PageResp<UserQueryResp>> resp = new CommonResp<>();
         PageResp<UserQueryResp> list = userService.list(req);
         resp.setContent(list);
@@ -80,6 +79,15 @@ public class UserController {
         redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginResp), 3600 * 24, TimeUnit.SECONDS);
 
         resp.setContent(userLoginResp);
+        LOG.info("查看resp:{}", resp);
+        return resp;
+    }
+
+    @GetMapping("/logout/{token}")
+    public CommonResp logout(@PathVariable String token) {
+        CommonResp resp = new CommonResp<>();
+        redisTemplate.delete(token);
+        LOG.info("从redis中删除token: {}", token);
         return resp;
     }
 }
