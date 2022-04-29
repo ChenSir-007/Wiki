@@ -7,6 +7,7 @@ import com.jackchen.wiki.domain.Doc;
 import com.jackchen.wiki.domain.DocExample;
 import com.jackchen.wiki.mapper.ContentMapper;
 import com.jackchen.wiki.mapper.DocMapper;
+import com.jackchen.wiki.mapper.DocMapperCust;
 import com.jackchen.wiki.req.DocQueryReq;
 import com.jackchen.wiki.req.DocSaveReq;
 import com.jackchen.wiki.resp.DocQueryResp;
@@ -28,6 +29,9 @@ public class DocService {
 
     @Resource
     private DocMapper docMapper;
+
+    @Resource
+    private DocMapperCust docMapperCust;
 
     @Resource
     private ContentMapper contentMapper;
@@ -87,6 +91,8 @@ public class DocService {
         if (ObjectUtils.isEmpty(req.getId())) {
             // 新增
             doc.setId(snowFlake.nextId());
+            doc.setViewCount(0);
+            doc.setVoteCount(0);
             docMapper.insert(doc);
 
             content.setId(doc.getId());
@@ -114,6 +120,8 @@ public class DocService {
 
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
+        // 文档阅读数+1
+        docMapperCust.increaseViewCount(id);
         if (ObjectUtils.isEmpty(content)) {
             return "";
         } else {
