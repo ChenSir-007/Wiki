@@ -59,14 +59,14 @@
     :confirm-loading="modalLoading"
     @ok="handleModalOk"
   >
-    <a-form :model="user" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+    <a-form :model="user" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }" :rules="rules">
       <a-form-item label="登陆名">
         <a-input v-model:value="user.loginName" :disabled="!!user.id"/>
       </a-form-item>
       <a-form-item label="昵称">
         <a-input v-model:value="user.name" />
       </a-form-item>
-      <a-form-item label="密码" v-show="!user.id">
+      <a-form-item label="密码" v-show="!user.id" name="password">
         <a-input v-model:value="user.password"/>
       </a-form-item>
     </a-form>
@@ -107,6 +107,12 @@
         total: 0
       });
       const loading = ref(false);
+      const rules = {
+        password: [
+          {required: true, message: '密码不能为空'},
+          {min: 6, max: 24, message: '密码需要在6-24位之间'}
+        ]
+      }
 
       const columns = [
         {
@@ -287,7 +293,8 @@
         resetModalVisible,
         resetModalLoading,
         handleResetModalOk,
-        resetPassword
+        resetPassword,
+        rules
       }
     }
   });
