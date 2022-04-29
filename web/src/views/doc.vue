@@ -24,6 +24,11 @@
             <a-divider style="height: 2px; background-color: #9999cc"/>
           </div>
           <div class="wangeditor" :innerHTML="html"></div>
+          <div class="vote-div">
+            <a-button type="primary" shape="round" :size="'large'" @click="vote">
+              <template #icon><LikeOutlined /> &nbsp;点赞：{{doc.voteCount}} </template>
+            </a-button>
+          </div>
         </a-col>
       </a-row>
     </a-layout-content>
@@ -111,6 +116,18 @@ export default defineComponent({
       });
     };
 
+    // 点赞
+    const vote = () => {
+      axios.get('/doc/vote/' + doc.value.id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          doc.value.voteCount++;
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
+
 
     onMounted(() => {
       handleQuery();
@@ -121,7 +138,8 @@ export default defineComponent({
       html,
       onSelect,
       defaultSelectedKeys,
-      doc
+      doc,
+      vote
     }
   }
 });
@@ -134,12 +152,14 @@ export default defineComponent({
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
 }
+
 .wangeditor table td,
 .wangeditor table th {
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
   padding: 3px 5px;
 }
+
 .wangeditor table th {
   border-bottom: 2px solid #ccc;
   text-align: center;
@@ -166,6 +186,7 @@ export default defineComponent({
   padding: 3px 5px;
   margin: 0 3px;
 }
+
 .wangeditor pre code {
   display: block;
 }
@@ -177,10 +198,10 @@ export default defineComponent({
 
 /* 和antdv p冲突，覆盖掉 */
 .wangeditor blockquote p {
-  font-family:"YouYuan";
+  font-family: "YouYuan";
   margin: 20px 10px !important;
   font-size: 16px !important;
-  font-weight:600;
+  font-weight: 600;
 }
 
 /* 点赞 */
