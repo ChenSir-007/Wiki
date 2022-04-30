@@ -3,6 +3,7 @@ package com.jackchen.wiki.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jackchen.wiki.domain.Content;
+import com.jackchen.wiki.domain.ContentExample;
 import com.jackchen.wiki.domain.Doc;
 import com.jackchen.wiki.domain.DocExample;
 import com.jackchen.wiki.exception.BusinessException;
@@ -124,11 +125,16 @@ public class DocService {
         docMapper.deleteByPrimaryKey(id);
     }
 
+    @Transactional
     public void delete(List<String> ids) {
         DocExample docExample = new DocExample();
         DocExample.Criteria criteria = docExample.createCriteria();
         criteria.andIdIn(ids);
+        ContentExample contentExample = new ContentExample();
+        ContentExample.Criteria content_criteria = contentExample.createCriteria();
+        content_criteria.andIdIn(ids);
         docMapper.deleteByExample(docExample);
+        contentMapper.deleteByExample(contentExample);
     }
 
     public String findContent(Long id) {
