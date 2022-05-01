@@ -1,5 +1,5 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>基于vue3的校园知识库系统设计与实现</h1>
   </div>
 </template>
